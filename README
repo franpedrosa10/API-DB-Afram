@@ -1,0 +1,8 @@
+Para instalar las dependencias:
+    > npm install
+    > npm install bcrypt
+    > npm i nodemailer
+
+Para correrlo:
+    > npm run dev
+    
