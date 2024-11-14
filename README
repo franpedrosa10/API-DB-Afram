@@ -1,7 +1,10 @@
 Para instalar las dependencias:
-    > npm install
-    > npm install bcrypt
+    > npm i
+    > npm i bcrypt
     > npm i nodemailer
+    > npm i express
+    > npm i cors
+    > npm i mysql2
 
 Para correrlo:
     > npm run dev
