@@ -5,6 +5,7 @@ Para instalar las dependencias:
     > npm i express
     > npm i cors
     > npm i mysql2
+    > npm i nodemon
 
 Para correrlo:
     > npm run dev
