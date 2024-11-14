@@ -28,7 +28,7 @@ const getFixedTermByIdController = async (req, res, next) => {
 
 // Crear un plazo fijo
 const createFixedTermController = async (req, res, next) => {
-  const { account_id, invested_amount, expiration_date, interest_rate_id, start_date } =
+  const { account_id, invested_amount, expiration_date, interest_rate_id, start_date, interest_earned } =
     req.body;
 
     console.log(account_id, invested_amount, expiration_date, interest_rate_id, start_date);
@@ -37,7 +37,7 @@ const createFixedTermController = async (req, res, next) => {
     invested_amount === undefined ||
     expiration_date === undefined ||
     start_date === undefined ||
-
+    interest_earned === undefined ||
     !interest_rate_id
   ) {
     return res
@@ -51,6 +51,7 @@ const createFixedTermController = async (req, res, next) => {
     start_date: new Date(),
     expiration_date,
     interest_rate_id,
+    interest_earned
   };
 
   try {
