@@ -77,7 +77,7 @@ const updateAccountAliasController = async (req, res, next) => {
 
 // Dar de baja una cuenta
 const deactivateAccount = async (req, res, next) => {
-  const accountId = req.params.id;
+  const accountId  = req.body.accountId;
 
   try {
     const result = await accountsService.deactivateAccount(accountId);

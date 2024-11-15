@@ -8,7 +8,7 @@ router
 .get('/:id', accountController.getAccount)                                  // Para obtener una cuenta específica 
 .post('/', accountController.createAccount)                                 // Actualizar balance 
 .put('/:id/balance', accountController.updateBalance)                       // Para crear una nueva cuenta 
-.put('/deactivate/:id', accountController.deactivateAccount)                // Para desactivar una cuenta 
+.put('/deactivate', accountController.deactivateAccount)                // Para desactivar una cuenta 
 .put('/alias/:id', accountController.updateAccountAliasController)          // Para actualizar alias 
 .get('/alias/:alias', accountController.getAccountIdByAlias)                // Para obtener ID por alias 
 .get('/cbu/:cbu', accountController.getAccountIdByCBU)                      // Para obtener el id por CBU 

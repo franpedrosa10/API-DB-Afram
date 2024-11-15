@@ -26,12 +26,13 @@ const getLoanById = async (loanId) => {
 // Crear un nuevo préstamo
 const createLoan = async (loanData) => {
   try {
-    const [id] = await knex(TABLE_NAME).insert(loanData).returning("id");
-    return id;
+    await knex(TABLE_NAME).insert(loanData);
+    return true;
   } catch (error) {
     throw new Error(`Error creating loan: ${error.message}`);
   }
 };
+
 
 // Actualizar un préstamo por ID
 const updateLoan = async (loanId, amountToAdd) => {
@@ -43,9 +44,38 @@ const updateLoan = async (loanId, amountToAdd) => {
   }
 };
 
+// Obtener préstamos por account_id
+const getLoansByAccountId = async (accountId) => {
+  try {
+    return await knex(TABLE_NAME).where({ account_id: accountId });
+  } catch (error) {
+    throw new Error(`Error fetching by  ID: ${error.message}`);
+  }
+};
+
+// Sumar al paid
+const updatePaid = async (loanId, amountToAdd) => {
+  try {
+    const result = await knex(TABLE_NAME)
+      .where({ id: loanId })
+      .increment("paid", amountToAdd);
+
+
+    if (result > 0) {
+      return true;  
+    } else {
+      return false;  
+    }
+  } catch (error) {
+    throw new Error(`Error updating paid field: ${error.message}`);
+  }
+};
+
 export default {
   getAllLoans,
   getLoanById,
   createLoan,
   updateLoan,
+  getLoansByAccountId,
+  updatePaid
 };
