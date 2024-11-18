@@ -1,6 +1,7 @@
 import knex from "../../database/knex.js";
 import bcrypt from "bcrypt";
 const TABLE_NAME = "Users";
+import crypto from "crypto"; 
 
 // Obtener todos los usuarios
 const getAllUsers = async () => {
@@ -181,6 +182,94 @@ const getUserIdByDNI = async (dni) => {
   return user.id;
 };
 
+
+// Obtener ID de usuario por correo electrónico
+const getUserIdByEmail = async (email) => {
+  try {
+    const user_id = await knex(TABLE_NAME)
+      .select("id") 
+      .where({ email }) // Usamos el email como criterio de búsqueda
+      .first(); // Aseguramos que solo se devuelva un registro
+
+    if (!user_id) {
+      // Si no se encuentra el usuario, retornamos null o un valor apropiado
+      return null;
+    }
+
+    return user_id; // Retornamos el ID del usuario
+  } catch (error) {
+    throw new Error(`Error fetching user by email: ${error.message}`);
+  }
+};
+
+
+// Cambiar contraseña por token
+const changePasswordById = async (id, newPassword) => {
+  try {
+    // Generar un hash de la nueva contraseña
+    const saltRounds = 10;
+    const hashedNewPassword = await bcrypt.hash(newPassword, saltRounds);
+
+    // Actualizar la contraseña en la base de datos
+    await knex(TABLE_NAME)
+      .where({ id })
+      .update({ hashed_password: hashedNewPassword });
+
+    // Poner el reset_token en null después de cambiar la contraseña
+    await knex(TABLE_NAME)
+      .where({ id })
+      .update({ reset_token: null });
+
+    return true;  // Retorna true si todo sale bien
+  } catch (error) {
+    throw error;
+  }
+};
+
+// Obtener ID de usuario por token de reseteo
+const getUserIdByToken = async (resetToken) => {
+  try {
+    const user = await knex(TABLE_NAME)
+      .select("id")
+      .where("reset_token", resetToken)
+      .first();
+
+    if (!user) {
+      return false; // Si no se encuentra el usuario, se retorna false
+    }
+
+    return user.id; // Devuelve el ID del usuario
+  } catch (error) {
+    throw error; // Si ocurre algún error, se lanza
+  }
+};
+
+
+
+// Generar un token de recuperación de 6 dígitos y guardarlo en la base de datos
+const generateRecoveryToken = async (id) => {
+  try {
+    // Generar un token de 6 dígitos aleatorios
+    const token = crypto.randomInt(100000, 999999).toString(); // Genera un número aleatorio entre 100000 y 999999
+
+    // Actualiza el token en la base de datos (sin fecha de expiración)
+    const rowsUpdated = await knex(TABLE_NAME)
+      .where(id)
+      .update({
+        reset_token: token,
+      });
+
+
+    if (rowsUpdated === 0) {
+      return false; // Si no se actualiza ningún registro, retorna false
+    }
+
+    return token; // Retorna el token generado si todo fue bien
+  } catch (error) {
+    throw new Error(`Error al generar el token: ${error.message}`); // Lanza un error en caso de fallo
+  }
+};
+
 export default {
   getAllUsers,
   getOneUser,
@@ -191,4 +280,8 @@ export default {
   toggleUserStatus,
   toggleUserAdminStatus,
   getUserIdByDNI,
+  getUserIdByEmail,
+  changePasswordById,
+  getUserIdByToken,
+  generateRecoveryToken
 };

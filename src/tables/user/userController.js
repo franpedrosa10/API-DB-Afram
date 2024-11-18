@@ -67,6 +67,7 @@ const verifyUser = async (req, res, next) => {
   }
 };
 
+
 // Cambiar contraseña
 const changePassword = async (req, res, next) => {
   const {
@@ -129,6 +130,61 @@ const getUserIdByDNI = async (req, res, next) => {
   }
 };
 
+const getUserIdByEmailController = async (req, res, next) => {
+  const {
+    params: { email },
+  } = req;
+  try {
+    const result = await usersService.getUserIdByEmail(email);
+    if (!result.id) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    return res.status(200).json(result.id);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Cambiar contraseña
+const changePasswordById = async (req, res, next) => {
+  const {
+    params: { id },
+    body: { newPassword },
+  } = req;
+  try {
+    const result = await usersService.changePasswordById(
+      id,
+      newPassword
+    );
+    return res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getUserIdByResetToken = async (req, res) => {
+  const { token } = req.params;
+
+  if (!token) {
+    return res.status(400).json(false);
+  }
+
+  try {
+
+    const userId = await usersService.getUserIdByToken(token);
+
+    if (!userId) {
+      return res.status(404).json(false);
+    }
+
+    return res.status(200).json(userId); // Devuelve el ID del usuario si el token es válido
+  } catch (error) {
+    console.error("Error al obtener el ID del usuario por token: ", error);
+    return res.status(500).json(false);
+  }
+};
+
+
 export default {
   getAllUsers,
   getOneUser,
@@ -139,4 +195,7 @@ export default {
   toggleUserStatus,
   toggleUserAdminStatus,
   getUserIdByDNI,
+  getUserIdByEmailController,
+  changePasswordById,
+  getUserIdByResetToken
 };

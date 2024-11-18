@@ -13,7 +13,9 @@ router
     .post('/toggle-user-status/:id', userController.toggleUserStatus)       // Dar de alta o baja un usuario
     .post('/toggle-admin-status/:id', userController.toggleUserAdminStatus) // Cambiar a admin o user
     .get('/id/:dni', userController.getUserIdByDNI)                         // Obtener ID de usuario por dni
-    
+    .get('/email/:email', userController.getUserIdByEmailController)        // Obtener Id por email
+    .put('/change-password-by-id/:id', userController.changePasswordById)   // Cambiar la contraseña con el token
+    .get('/reset-token/:token', userController.getUserIdByResetToken); 
 
 
 export default router;
