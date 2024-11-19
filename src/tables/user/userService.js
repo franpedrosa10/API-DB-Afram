@@ -30,10 +30,13 @@ const createUser = async (user) => {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(user.hashed_password, saltRounds);
 
+    const lastUser = await knex(TABLE_NAME).select('id').orderBy('id','desc').first();
+    const newId = lastUser.id + 1;
+
     await knex(TABLE_NAME).insert({
       name_user: user.name_user,
       last_name: user.last_name,
-      email: "",
+      email: "example"+newId+"@example.com",
       hashed_password: hashedPassword,
       dni: user.dni,
       phone: "",
