@@ -50,10 +50,12 @@ const getFixedTermsByAccountId = async (accountId) => {
 
 const updateIsPaid = async (id) => {
   try {
-    await knex(TABLE_NAME).where({ id }).update({ is_paid: 'yes' });
+    await knex(TABLE_NAME)
+          .where({ id: id })
+          .update({ is_paid: "yes" });
     return true;  
   } catch (error) {
-    throw new Error(`Error updating expiration date to NULL: ${error.message}`);
+    throw new Error(`Error updating is paid: ${error.message}`);
   }
 };
 
