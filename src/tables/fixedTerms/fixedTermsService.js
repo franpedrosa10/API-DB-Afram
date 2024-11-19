@@ -48,10 +48,10 @@ const getFixedTermsByAccountId = async (accountId) => {
   }
 };
 
-const updateExpirationDateToNull = async (id) => {
+const updateIsPaid = async (id) => {
   try {
-    await knex(TABLE_NAME).where({ id }).update({ expiration_date: null });
-    return true;  // Indica que la actualización fue exitosa
+    await knex(TABLE_NAME).where({ id }).update({ is_paid: 'yes' });
+    return true;  
   } catch (error) {
     throw new Error(`Error updating expiration date to NULL: ${error.message}`);
   }
@@ -63,5 +63,5 @@ export default {
   createFixedTerm,
   updateFixedTerm,
   getFixedTermsByAccountId,
-  updateExpirationDateToNull
+  updateIsPaid
   };

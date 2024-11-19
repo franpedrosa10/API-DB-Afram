@@ -90,10 +90,10 @@ const getFixedTermsByAccountIdController = async (req, res, next) => {
   }
 };
 
-const updateExpirationDateToNullController = async (req, res, next) => {
+const updateIsPaidController = async (req, res, next) => {
   const { id } = req.body;
   try {
-    const result = await fixedTermsService.updateExpirationDateToNull(id); // Llama a la función en el servicio
+    const result = await fixedTermsService.updateIsPaid(id); 
     if (result) {
       return res.status(200).json(true);
     } else {
@@ -110,5 +110,5 @@ export default {
   createFixedTermController,
   updateFixedTermController,
   getFixedTermsByAccountIdController,
-  updateExpirationDateToNullController
+  updateIsPaidController
 };
