@@ -8,6 +8,7 @@ router
     .get('/:id', fixedTermsController.getFixedTermByIdController)                // Obtener plazo fijo por ID    
     .post('/', fixedTermsController.createFixedTermController)                   // Crear un nuevo plazo fijo      
     .patch('/:id', fixedTermsController.updateFixedTermController)               // Actualizar un plazo fijo por ID
-    .get('/account/:account_id', fixedTermsController.getFixedTermsByAccountIdController); // Obtener plazos fijos por ID de usuario  
+    .get('/account/:account_id', fixedTermsController.getFixedTermsByAccountIdController)// Obtener plazos fijos por ID de usuario 
+    .patch('/expiration-date-null', fixedTermsController.updateExpirationDateToNullController)
 
 export default router;
