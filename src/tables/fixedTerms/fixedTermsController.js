@@ -32,6 +32,7 @@ const createFixedTermController = async (req, res, next) => {
     req.body;
 
     console.log(account_id, invested_amount, expiration_date, interest_rate_id, start_date);
+    const is_paid = 'no';
   if (
     !account_id ||
     invested_amount === undefined ||
@@ -51,7 +52,8 @@ const createFixedTermController = async (req, res, next) => {
     start_date: new Date(),
     expiration_date,
     interest_rate_id,
-    interest_earned
+    interest_earned,
+    is_paid
   };
 
   try {
