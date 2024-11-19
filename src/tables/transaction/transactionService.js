@@ -8,7 +8,7 @@ const getTransactionsByAccountId = async (accountId) => {
       .select("*")
       .where("source_account_id", accountId)
       .orWhere("destination_account_id", accountId)
-      .orderBy("transaction_date", "desc");
+      .orderBy("id", "desc");
 
     return transactions;
   } catch (error) {
