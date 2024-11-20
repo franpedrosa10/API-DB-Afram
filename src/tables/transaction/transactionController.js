@@ -22,12 +22,13 @@ const getTransactionsByAccountIdController = async (req, res, next) => {
 
 // Crear una nueva transacción
 const createTransactionController = async (req, res, next) => {
-  const { amount, source_account_id, destination_account_id } = req.body;
+  const { amount, source_account_id, destination_account_id, transaction_type } = req.body;
 
   if (
     amount === undefined ||
     source_account_id === undefined ||
-    destination_account_id === undefined
+    destination_account_id === undefined ||
+    transaction_type === undefined
   ) {
     return res
       .status(400)
@@ -49,6 +50,7 @@ const createTransactionController = async (req, res, next) => {
       amount,
       source_account_id,
       destination_account_id,
+      transaction_type
     });
 
     return res.status(201).json(result.id);

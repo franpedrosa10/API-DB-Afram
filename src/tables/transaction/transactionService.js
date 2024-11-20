@@ -28,6 +28,7 @@ const createTransaction = async (transactionData) => {
       transaction_date: localDate,
       source_account_id: transactionData.source_account_id,
       destination_account_id: transactionData.destination_account_id,
+      transaction_type: transactionData.transaction_type
     });
 
     const newTransaction = await knex(TABLE_NAME)
@@ -37,6 +38,7 @@ const createTransaction = async (transactionData) => {
         "destination_account_id",
         transactionData.destination_account_id
       )
+      .andWhere("transaction_type", transactionData.transaction_type)
       .orderBy("transaction_date", "desc")
       .first();
 
