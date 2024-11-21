@@ -30,16 +30,16 @@ const sendEmailService = async (to, subject, text) => {
 const sendTransferEmailService = async (
   to,
   amount,
-  sourceAccountId,
-  destinationAccountId
+  sourceUser,
+  destinationUser
 ) => {
   const emailText = `
         Este es un correo automatizado. No respondas a este correo. 
         Se ha realizado una transferencia desde tu cuenta. A continuación, los detalles de la transacción:
 
         - Monto transferido: $${amount}
-        - Cuenta de origen: ${sourceAccountId}
-        - Cuenta de destino: ${destinationAccountId}
+        - Cuenta de origen: ${sourceUser.last_name}, ${sourceUser.real_name}
+        - Cuenta de destino: ${destinationUser.last_name}, ${destinationUser.real_name}
 
         Si necesitas asistencia, por favor contáctanos por teléfono al 2235123456.
     `;
