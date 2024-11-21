@@ -18,8 +18,8 @@ const sendEmail = async (req, res, next) => {
 const sendTransferEmail = async (req, res, next) => {
   const { to, amount, sourceAccountId, destinationAccountId } = req.body;
 
-  const sourceUser = await accountService.getOneUser(sourceAccountId);
-  const destinationUser = await accountService.getOneUser(destinationAccountId);
+  const sourceUser = await userService.getOneUser(sourceAccountId);
+  const destinationUser = await userService.getOneUser(destinationAccountId);
 
   try {
     await emailService.sendTransferEmailService(

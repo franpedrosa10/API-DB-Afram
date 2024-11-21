@@ -100,8 +100,8 @@ const sendTransferEmailService = async (
                         <p>Te informamos que se ha realizado una transferencia desde tu cuenta. A continuación, encontrarás los detalles de la transacción:</p>
                         <ul>
                         <li><strong>Monto transferido:</strong> $${amount}</li>
-                        <li><strong>Cuenta de origen:</strong> ${sourceAccountId}</li>
-                        <li><strong>Cuenta de destino:</strong> ${destinationAccountId}</li>
+                        <li><strong>Cuenta de origen:</strong>  ${sourceUser.last_name}, ${sourceUser.real_name}</li>
+                        <li><strong>Cuenta de destino:</strong> ${destinationUser.last_name}, ${destinationUser.real_name}</li>
                         </ul>
                         <p>Este es un correo automatizado. Por favor, no respondas a este mensaje. Si tienes alguna duda o necesitas asistencia adicional, contáctanos a nuestro servicio de atención al cliente al <strong style="color: #007BFF;">2235123456</strong> o visita nuestra página de soporte en <a href="http://localhost:4200/" style="color: #007BFF; text-decoration: underline;">nuestro sitio web</a></p>
                             
