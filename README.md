@@ -13,7 +13,7 @@ El proyecto busca demostrar la aplicación práctica de metodologías ágiles, d
 Sigue estos pasos para configurar el proyecto en tu máquina:
 
 - git clone https://github.com/franpedrosa10/API-DB-Afram.git
-- cd AFRAM-group
+- cd API-DB-Afram
 - npm i
 - npm i bcrypt
 - npm i nodemailer
@@ -27,7 +27,7 @@ Ejecuta npm run dev para correrlo.
 ## Tecnologías utilizadas
 <img src="https://cdn.pixabay.com/photo/2015/04/23/17/41/node-js-736399_960_720.png" alt="NodeJS logo" width="120px">
 <img src="https://1000marcas.net/wp-content/uploads/2020/11/MySQL-logo.png" alt="MySQL logo" width="120px">
-
+<img src="https://logodownload.org/wp-content/uploads/2022/04/javascript-logo.png" alt="Javascript logo" width="120px">
 
 
  El frontend de este proyecto está disponible en este [repositorio](https://github.com/AgustinaHourcade/AFRAM-Group.git)  
