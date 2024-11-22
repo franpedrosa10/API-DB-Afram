@@ -1,5 +1,6 @@
 import knex from "../../database/knex.js";
 import bcrypt from "bcrypt";
+import { log } from "console";
 const TABLE_NAME = "Users";
 import crypto from "crypto"; 
 
@@ -20,7 +21,7 @@ const getOneUser = async (userId) => {
   return user;
 };
 
-// Crear un usuario
+// Crear un usuario con email random
 const createUser = async (user) => {
   try {
     if (!user.hashed_password) {
@@ -40,6 +41,39 @@ const createUser = async (user) => {
       hashed_password: hashedPassword,
       dni: user.dni,
       phone: "",
+      user_type: user.user_type || "user",
+      is_Active: user.is_Active || "yes",
+      real_name: user.real_name,
+    });
+
+    const newUser = await knex(TABLE_NAME).where("dni", user.dni).first();
+
+    return newUser.id;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// Crear un usuario completo
+const createUserComplete = async (user) => {
+  try {
+    if (!user.hashed_password) {
+      throw new Error("Password is required");
+    }
+
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(user.hashed_password, saltRounds);
+
+    const lastUser = await knex(TABLE_NAME).select('id').orderBy('id','desc').first();
+    const newId = lastUser.id + 1;
+
+    await knex(TABLE_NAME).insert({
+      name_user: user.name_user,
+      last_name: user.last_name,
+      email: user.email,
+      hashed_password: hashedPassword,
+      dni: user.dni,
+      phone: user.phone,
       user_type: user.user_type || "user",
       is_Active: user.is_Active || "yes",
       real_name: user.real_name,
@@ -277,6 +311,7 @@ export default {
   getAllUsers,
   getOneUser,
   createUser,
+  createUserComplete,
   updateUser,
   verifyUser,
   changePassword,

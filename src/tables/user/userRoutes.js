@@ -6,7 +6,8 @@ const router = express.Router();
 router
     .get('/', userController.getAllUsers)                                   // Obtener todos los usuarios
     .get('/:userId', userController.getOneUser)                             // Oobtener un usuario específico
-    .post('/register', userController.createUser)                           // Crear un nuevo usuario
+    .post('/register', userController.createUser)                           // Crear un nuevo usuario sin email ni telefono
+    .post('/register-complete', userController.createUserComplete)          // Crear un usuario completo
     .put('/update/:id', userController.updateUser)                          // Actualizar teléfono, dirección y email de un usuario
     .post('/verify', userController.verifyUser)                             // Verificar usuario, dni y contraseña
     .put('/change-password/:id', userController.changePassword)             // Cambiar la contraseña

@@ -23,11 +23,22 @@ const getOneUser = async (req, res, next) => {
   }
 };
 
-// Crear un usuario
+// Crear un usuario sin mail ni telefono
 const createUser = async (req, res, next) => {
   const usuario = req.body;
   try {
     const result = await usersService.createUser(usuario);
+    return res.status(201).json(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Crear un usuario completo
+const createUserComplete = async (req, res, next) => {
+  const usuario = req.body;
+  try {
+    const result = await usersService.createUserComplete(usuario);
     return res.status(201).json(result);
   } catch (error) {
     next(error);
@@ -189,6 +200,7 @@ export default {
   getAllUsers,
   getOneUser,
   createUser,
+  createUserComplete,
   updateUser,
   verifyUser,
   changePassword,
