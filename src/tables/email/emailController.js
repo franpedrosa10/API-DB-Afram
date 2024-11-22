@@ -1,5 +1,6 @@
 import emailService from "./emailService.js";
-import userService from "../user/userService.js"
+import userService from "../user/userService.js";
+
 
 // Enviar un email
 const sendEmail = async (req, res, next) => {
@@ -17,12 +18,15 @@ const sendEmail = async (req, res, next) => {
 const sendTransferEmail = async (req, res, next) => {
   const { to, amount, sourceAccountId, destinationAccountId } = req.body;
 
+  const sourceUser = await userService.getOneUser(sourceAccountId);
+  const destinationUser = await userService.getOneUser(destinationAccountId);
+
   try {
     await emailService.sendTransferEmailService(
       to,
       amount,
-      sourceAccountId,
-      destinationAccountId
+      sourceUser,
+      destinationUser
     );
     console.log("Correo enviado exitosamente");
   } catch (error) {
