@@ -1,12 +1,13 @@
 import knex from "../../database/knex.js";
 import bcrypt from "bcrypt";
-import { log } from "console";
-const TABLE_NAME = "Users";
 import crypto from "crypto"; 
+const TABLE_NAME = "Users";
 
 // Obtener todos los usuarios
 const getAllUsers = async () => {
-  const users = await knex(TABLE_NAME).select();
+  const users = await knex(TABLE_NAME)
+    .select()
+    .orderBy(['real_name', 'last_name'], ['asc', 'asc']); 
   return users;
 };
 
