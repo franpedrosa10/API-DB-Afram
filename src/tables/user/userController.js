@@ -1,4 +1,5 @@
 import usersService from "./userService.js";
+import accountsService from "../accounts/accountsService.js";
 
 // Obtener todos los usuarios
 const getAllUsers = async (req, res, next) => {
@@ -101,6 +102,12 @@ const changePassword = async (req, res, next) => {
 const toggleUserStatus = async (req, res, next) => {
   const userId = req.params.id;
   const { isActive } = req.body;
+
+  const accounts = await accountsService.getAccountsByUserIdOrDni(userId);
+accounts.forEach(account => {
+   accountsService.deactivateAccount(account.id);
+});
+
 
   try {
     const result = await usersService.toggleUserStatus(userId, isActive);
