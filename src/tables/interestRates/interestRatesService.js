@@ -4,7 +4,7 @@ const TABLE_NAME = "InterestRates";
 // Obtener todas las tasas de interés
 const getAllInterestRates = async () => {
   try {
-    return await knex(TABLE_NAME).select("*").orderBy("last_updated", "desc");
+    return await knex(TABLE_NAME).select("*").orderBy("id", "desc");
   } catch (error) {
     throw new Error(`Error fetching interest rates: ${error.message}`);
   }
