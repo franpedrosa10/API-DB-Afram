@@ -13,7 +13,8 @@ import routerLoans from  './tables/loans/loansRoutes.js';
 import routerFixedTerms from './tables/fixedTerms/fixedTermsRoutes.js';
 import routerAdresses from  './tables/addresses/addressesRoutes.js';
 import routerEmail from './tables/email/emailRoutes.js';
-
+import routerSupport from './tables/support/supportRoutes.js'
+import routerSupportMessages from './tables/supportMessages/supportMessagesRoutes.js'
 
 
 const app = express();
@@ -30,6 +31,8 @@ app.use('/loans',routerLoans)
 app.use('/fixedTerms',routerFixedTerms)
 app.use('/addresses',routerAdresses)
 app.use('/email', routerEmail)
+app.use('/support', routerSupport)
+app.use('/message', routerSupportMessages)
 
 
 app.listen(PORT, () => {
