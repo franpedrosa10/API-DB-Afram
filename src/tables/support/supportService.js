@@ -10,11 +10,11 @@ const getAllThreads = async () => {
   }
 };
 
-const getThreadsByUserId = async (userId) => {
+const getThreadsByUserId = async (user_id) => {
   try {
-    return await knex(TABLE_NAME).select("*").where({ user_id: userId });
+    return await knex(TABLE_NAME).select("*").where({ user_id: user_id });
   } catch (error) {
-    throw new Error(`Error fetching threads for user ${userId}: ${error.message}`);
+    throw new Error(`Error fetching threads for user ${user_id}: ${error.message}`);
   }
 };
 
