@@ -59,6 +59,49 @@ const createTransactionController = async (req, res, next) => {
   }
 };
 
+const createFutureTransactionController = async (req, res, next) => {
+  const { amount, source_account_id, destination_account_id, transaction_type, transaction_date } = req.body;
+
+  if (
+    amount === undefined ||
+    source_account_id === undefined ||
+    destination_account_id === undefined ||
+    transaction_type === undefined ||
+    transaction_date === undefined
+  ) {
+    return res
+      .status(400)
+      .json({
+        success: false,
+        message:
+          "Amount, source_account_id, destination_account_id, transaction_type, and transaction_date are required",
+      });
+  }
+
+  if (typeof amount !== "number") {
+    return res
+      .status(400)
+      .json({ success: false, message: "Amount must be a number" });
+  }
+
+  try {
+    // Crear transacción futura
+    const result = await transactionService.createFutureTransaction({
+      amount,
+      source_account_id,
+      destination_account_id,
+      transaction_type,
+      transaction_date,
+      is_paid: 'no'
+    });
+
+    return res.status(201).json({ transactionId: result.id });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
 //Filtrar transacciones
 const filterTransactionsController = async (req, res, next) => {
   const filters = req.body;
@@ -103,4 +146,5 @@ export default {
   createTransactionController,
   filterTransactionsController,
   getTransactionByIdController,
+  createFutureTransactionController,
 };

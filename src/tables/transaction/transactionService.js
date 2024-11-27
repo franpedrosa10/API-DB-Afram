@@ -48,6 +48,36 @@ const createTransaction = async (transactionData) => {
   }
 };
 
+// Crear una nueva transacción futura
+const createFutureTransaction = async (transactionData) => {
+  try {
+    const localDate = new Date();
+    localDate.setHours(localDate.getHours() - 3); // Ajuste de zona horaria si es necesario
+
+    await knex(TABLE_NAME).insert({
+      amount: transactionData.amount,
+      transaction_date: transactionData.scheduled_date || localDate, // Usa la fecha programada si está disponible
+      source_account_id: transactionData.source_account_id,
+      destination_account_id: transactionData.destination_account_id,
+      transaction_type: transactionData.transaction_type,
+      is_paid: "no",
+    });
+
+    const newTransaction = await knex(TABLE_NAME)
+      .where("amount", transactionData.amount)
+      .andWhere("source_account_id", transactionData.source_account_id)
+      .andWhere("destination_account_id", transactionData.destination_account_id)
+      .andWhere("transaction_type", transactionData.transaction_type)
+      .andWhere("is_paid", "no") 
+      .orderBy("id", "desc")
+      .first();
+
+    return newTransaction.id;
+  } catch (error) {
+    throw new Error(`Error creating future transaction: ${error.message}`);
+  }
+};
+
 // Filtrar transacciones
 const filterTransactions = async (filters) => {
   try {
@@ -122,4 +152,5 @@ export default {
   createTransaction,
   filterTransactions,
   getTransactionById,
+  createFutureTransaction,
 };

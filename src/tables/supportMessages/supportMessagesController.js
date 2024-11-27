@@ -9,7 +9,7 @@ const getMessagesByThreadIdController = async (req, res, next) => {
         .status(404)
         .json({ success: false, message: "No messages found for this thread" });
     }
-    return res.status(200).json({ success: true, data: messages });
+    return res.status(200).json(messages);
   } catch (error) {
     next(error);
   }

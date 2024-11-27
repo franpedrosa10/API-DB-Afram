@@ -53,10 +53,21 @@ const updateThreadStatus = async (threadId, newStatus) => {
     }
   };
   
+  const getThreadsById = async (id) => {
+    try {
+      const thread = await knex(TABLE_NAME).select().where( "id", id ).first();
+      return thread;
+    } catch (error) {
+      throw new Error(`Error fetching threads for user ${id}: ${error.message}`);
+    }
+  };
+
+ 
 
 export default {
   getAllThreads,
   getThreadsByUserId,
   createThread,
-  updateThreadStatus
+  updateThreadStatus,
+  getThreadsById
 };

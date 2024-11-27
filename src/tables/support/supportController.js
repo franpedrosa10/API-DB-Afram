@@ -17,7 +17,7 @@ const getAllThreadsController = async (req, res, next) => {
 
 const getThreadsByUserIdController = async (req, res, next) => {
   const { user_id } = req.params;
-  console.log('USER ID' + user_id);
+
   try {
     const threads = await supportService.getThreadsByUserId(user_id);
     if (!threads || threads.length === 0) {
@@ -63,10 +63,27 @@ const updateThreadStatusController = async (req, res, next) => {
   }
 };
 
+const getThreadsByIdController = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const thread = await supportService.getThreadsById(id);
+    if (!thread) {
+      return res
+        .status(404)
+        .json({ success: false, message: "No threads found for this user" });
+    }
+    return res.status(200).json(thread);
+  } catch (error) {
+    next(error);
+  }
+};
+
 
 export default {
     getAllThreadsController,
     getThreadsByUserIdController,
     createThreadController,
-    updateThreadStatusController
+    updateThreadStatusController,
+    getThreadsByIdController
 };
