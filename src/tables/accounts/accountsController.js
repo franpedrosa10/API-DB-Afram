@@ -11,6 +11,7 @@ const getAccount = async (req, res, next) => {
   }
 };
 
+
 // Obtener todas las cuentas
 const getAllAccounts = async (req, res, next) => {
   try {

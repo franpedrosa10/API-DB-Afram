@@ -152,10 +152,22 @@ const getTransactionById = async (transactionId) => {
   }
 };
 
+const updateIsPaidTransaction = async (id) => {
+  try {
+    await knex(TABLE_NAME)
+          .where({ id: id })
+          .update({ is_paid: "yes" });
+    return true;  
+  } catch (error) {
+    throw new Error(`Error updating is paid: ${error.message}`);
+  }
+};
+
 export default {
   getTransactionsByAccountId,
   createTransaction,
   filterTransactions,
   getTransactionById,
   createFutureTransaction,
+  updateIsPaidTransaction,
 };

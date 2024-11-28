@@ -141,10 +141,25 @@ const getTransactionByIdController = async (req, res, next) => {
   }
 };
 
+const updateIsPaidTransactionController = async (req, res, next) => {
+  const { id } = req.body;
+  try {
+    const result = await transactionService.updateIsPaidTransaction(id); 
+    if (result) {
+      return res.status(200).json(true);
+    } else {
+      return res.status(404).json(false);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   getTransactionsByAccountIdController,
   createTransactionController,
   filterTransactionsController,
   getTransactionByIdController,
   createFutureTransactionController,
+  updateIsPaidTransactionController,
 };

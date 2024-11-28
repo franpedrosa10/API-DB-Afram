@@ -27,7 +27,7 @@ const getAllAccounts = async () => {
 // Crear una nueva cuenta
 const createAccount = async (account) => {
   try {
-    const { cbu, alias, account_type, user_id, opening_date, overdraft_limit } =
+    const { cbu, alias, account_type, user_id, opening_date, overdraft_limit, currency } =
       account;
 
     const existingCBU = await knex(TABLE_NAME).where("cbu", cbu).first();
@@ -50,6 +50,7 @@ const createAccount = async (account) => {
       account_type,
       overdraft_limit: overdraft_limit || 0.0,
       user_id,
+      currency : currency || 'ars',
     });
 
     const newAccount = await knex(TABLE_NAME).where("cbu", cbu).first();
