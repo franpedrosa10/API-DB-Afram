@@ -1,14 +1,34 @@
 import knex from "../../database/knex.js";
+import supportMessages from "../supportMessages/supportMessagesService.js";
 const TABLE_NAME = "SupportThreads";
 
 
 const getAllThreads = async () => {
   try {
-    return await knex(TABLE_NAME).select("*");
+    const threads = await knex(TABLE_NAME).select('*').orderBy('id','desc');
+
+    for (let thread of threads) {
+      const messages = await supportMessages.getMessagesByThreadId(thread.id);
+
+      if (messages.length > 0) {
+        const lastMessage = messages.sort((a, b) => b.id - a.id)[0];
+
+        thread.has_user_last_message = lastMessage.sender_type === 'user';
+      } else {
+        thread.has_user_last_message = false;
+      }
+    }
+
+    return threads;
   } catch (error) {
     throw new Error(`Error fetching all threads: ${error.message}`);
   }
 };
+
+
+
+
+
 
 const getThreadsByUserId = async (user_id) => {
   try {

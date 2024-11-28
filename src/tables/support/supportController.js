@@ -9,11 +9,12 @@ const getAllThreadsController = async (req, res, next) => {
         .status(404)
         .json({ success: false, message: "No threads found" });
     }
-    return res.status(200).json(threads);
+    return res.status(200).json(threads); // Devuelve threads con la bandera
   } catch (error) {
     next(error);
   }
 };
+
 
 const getThreadsByUserIdController = async (req, res, next) => {
   const { user_id } = req.params;
