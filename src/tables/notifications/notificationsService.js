@@ -52,7 +52,7 @@ const deleteNotification = async (id) => {
 // Obtener todas las notificaciones de un usuario
 const getNotificationsByUserId = async (userId) => {
   try {
-    return await knex(TABLE_NAME).select("*").where({ user_id: userId });
+    return await knex(TABLE_NAME).select("*").where({ user_id: userId }).orderBy("id", "desc");
   } catch (error) {
     throw new Error(`Error fetching notifications for user: ${error.message}`);
   }
