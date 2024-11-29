@@ -15,6 +15,7 @@ import routerAdresses from  './tables/addresses/addressesRoutes.js';
 import routerEmail from './tables/email/emailRoutes.js';
 import routerSupport from './tables/support/supportRoutes.js'
 import routerSupportMessages from './tables/supportMessages/supportMessagesRoutes.js'
+import routerNotifications from './tables/notifications/notificationsRoutes.js'
 
 
 const app = express();
@@ -33,6 +34,7 @@ app.use('/addresses',routerAdresses)
 app.use('/email', routerEmail)
 app.use('/support', routerSupport)
 app.use('/message', routerSupportMessages)
+app.use('/notification', routerNotifications)
 
 
 app.listen(PORT, () => {

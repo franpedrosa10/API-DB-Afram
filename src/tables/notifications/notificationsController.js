@@ -13,7 +13,7 @@ const createNotificationController = async (req, res, next) => {
 
 // Marcar notificación como leída
 const markAsReadController = async (req, res, next) => {
-  const { id } = req.params;
+  const {id}  = req.body;
   try {
     const result = await notificationsService.markAsRead(id);
     return res.status(200).json({ success: result });
@@ -35,9 +35,10 @@ const deleteNotificationController = async (req, res, next) => {
 
 // Obtener todas las notificaciones de un usuario
 const getNotificationsByUserIdController = async (req, res, next) => {
-  const { userId } = req.params;
+  const { id } = req.params;
+  console.log('User id', id);
   try {
-    const notifications = await notificationsService.getNotificationsByUserId(userId);
+    const notifications = await notificationsService.getNotificationsByUserId(id);
     return res.status(200).json(notifications);
   } catch (error) {
     next(error);
