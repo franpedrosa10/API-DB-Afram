@@ -34,11 +34,13 @@ const getThreadsByUserId = async (user_id) => {
       if (messages.length > 0) {
         const lastMessage = messages.sort((a, b) => b.id - a.id)[0];
 
-        thread.has_user_last_message = true;
+        thread.has_user_last_message = lastMessage.sender_type === 'user';
       } else {
         thread.has_user_last_message = false;
       }
     }
+    return threads;
+
   } catch (error) {
     throw new Error(
       `Error fetching threads for user ${user_id}: ${error.message}`
