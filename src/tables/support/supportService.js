@@ -32,7 +32,19 @@ const getAllThreads = async () => {
 
 const getThreadsByUserId = async (user_id) => {
   try {
-    return await knex(TABLE_NAME).select("*").where({ user_id: user_id });
+    const threads = await knex(TABLE_NAME).select("*").where({ user_id: user_id });
+
+    for (let thread of threads) {
+      const messages = await supportMessages.getMessagesByThreadId(thread.id);
+
+      if (messages.length > 0) {
+        const lastMessage = messages.sort((a, b) => b.id - a.id)[0];
+
+        thread.has_user_last_message = true;
+      } else {
+        thread.has_user_last_message = false;
+      }
+    }
   } catch (error) {
     throw new Error(`Error fetching threads for user ${user_id}: ${error.message}`);
   }
