@@ -13,7 +13,7 @@ const getAllThreads = async () => {
       if (messages.length > 0) {
         const lastMessage = messages.sort((a, b) => b.id - a.id)[0];
 
-        thread.has_user_last_message = lastMessage.sender_type === 'user';
+        thread.has_user_last_message = true;
       } else {
         thread.has_user_last_message = false;
       }
