@@ -125,14 +125,21 @@ const deactivateAccount = async (accountId) => {
 // Obtener una cuenta por alias
 const getAccountIdByAliasService = async (alias) => {
   try {
-    const { id } =
-      (await knex(TABLE_NAME).select("id").where({ alias }).first()) || {};
+    // Busca la cuenta con el alias
+    const account = await knex(TABLE_NAME).select("*").where({ alias }).first();
 
-    return id || false;
+    // Verifica si se encontró una cuenta y si tiene currency igual a 'ars'
+    if (account && account.currency === 'ars') {
+      return account.id; // Devuelve el ID si es 'ars'
+    }
+
+    return false; // Si no es 'ars' o no hay cuenta, devuelve false
   } catch (error) {
+    // Lanza el error en caso de fallo
     throw error;
   }
 };
+
 
 // Obtener una cuenta por CBU
 const getAccountIdByCBUService = async (cbu) => {
