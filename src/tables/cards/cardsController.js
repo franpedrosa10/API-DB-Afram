@@ -41,7 +41,6 @@ const createCardController = async (req, res, next) => {
 const deactivateCardController = async (req, res, next) => {
   const {card_id}  = req.body;
 
-  console.log('CARD ID: '+card_id);
 
   try {
     const result = await cardsService.deactivateCard(card_id);

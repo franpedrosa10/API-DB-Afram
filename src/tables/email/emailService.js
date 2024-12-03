@@ -8,24 +8,6 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// Enviar mail
-const sendEmailService = async (to, subject, text) => {
-  const mailOptions = {
-    from: "afram.bank.not.reply@gmail.com",
-    to,
-    subject,
-    text,
-  };
-
-  try {
-    const info = await transporter.sendMail(mailOptions);
-    console.log("Email enviado: " + info.response);
-    return info;
-  } catch (error) {
-    throw new Error(`Error al enviar email: ${error.message}`);
-  }
-};
-
 // Enviar mail por transferencia
 const sendTransferEmailService = async (
   to,
@@ -225,4 +207,4 @@ const sendEmailWithToken = async (to, recoveryToken) => {
 };
 
 
-export default { sendEmailService, sendTransferEmailService, sendEmailWithToken };
+export default { sendTransferEmailService, sendEmailWithToken };

@@ -56,23 +56,6 @@ const createLoanController = async (req, res, next) => {
   }
 };
 
-// Actualizar un préstamo por ID
-const updateLoanController = async (req, res, next) => {
-  const { loanId } = req.params;
-  const { amount } = req.body;
-
-  try {
-    const updatedLoan = await loansService.updateLoan(loanId, amount);
-    if (!updatedLoan) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Loan not found" });
-    }
-    return res.status(200).json(updatedLoan);
-  } catch (error) {
-    next(error);
-  }
-};
 // Obtener plazos fijos por ID de usuario
 const getLoansByAccountIdController = async (req, res, next) => {
   const { account_id } = req.params;
@@ -125,7 +108,6 @@ export default {
   getAllLoansController,
   getLoanByIdController,
   createLoanController,
-  updateLoanController,
   getLoansByAccountIdController,
   updatePaidController
 };

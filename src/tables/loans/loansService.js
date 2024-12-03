@@ -34,15 +34,6 @@ const createLoan = async (loanData) => {
 };
 
 
-// Actualizar un préstamo por ID
-const updateLoan = async (loanId, amountToAdd) => {
-  try {
-    await knex(TABLE_NAME).where({ id: loanId }).increment("paid", amountToAdd);
-    return true;
-  } catch (error) {
-    throw new Error(`Error updating loan: ${error.message}`);
-  }
-};
 
 // Obtener préstamos por account_id
 const getLoansByAccountId = async (accountId) => {
@@ -75,7 +66,6 @@ export default {
   getAllLoans,
   getLoanById,
   createLoan,
-  updateLoan,
   getLoansByAccountId,
   updatePaid
 };

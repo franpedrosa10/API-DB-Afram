@@ -2,17 +2,6 @@ import emailService from "./emailService.js";
 import userService from "../user/userService.js";
 
 
-// Enviar un email
-const sendEmail = async (req, res, next) => {
-  const { to, subject, text } = req.body;
-
-  try {
-    const info = await emailService.sendEmailService(to, subject, text);
-    return res.status(200).send(`Email enviado: ${info.response}`);
-  } catch (error) {
-    next(error);
-  }
-};
 
 // Enviar mail por transferencia
 const sendTransferEmail = async (req, res, next) => {
@@ -57,4 +46,4 @@ const sendRecoveryToken = async (req, res, next) => {
   }
 };
 
-export default { sendEmail, sendTransferEmail, sendRecoveryToken };
+export default { sendTransferEmail, sendRecoveryToken };
