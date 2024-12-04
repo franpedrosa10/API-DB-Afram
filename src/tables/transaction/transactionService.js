@@ -164,6 +164,23 @@ const updateIsPaidTransaction = async (id) => {
   }
 };
 
+const deleteTransaction = async (transactionId) => {
+  try {
+    const rowsDeleted = await knex(TABLE_NAME)
+      .where({ id: transactionId })
+      .del();
+
+    if (rowsDeleted === 0) {
+      throw new Error(`Transaction with ID ${transactionId} not found`);
+    }
+
+    return true;
+  } catch (error) {
+    throw new Error(`Error deleting transaction: ${error.message}`);
+  }
+};
+
+
 export default {
   getTransactionsByAccountId,
   createTransaction,
@@ -171,4 +188,5 @@ export default {
   getTransactionById,
   createFutureTransaction,
   updateIsPaidTransaction,
+  deleteTransaction
 };

@@ -10,5 +10,6 @@ router
     .post('/filter', transactionController.filterTransactionsController)                    // Filtrar transacciones
     .patch('/is-paid', transactionController.updateIsPaidTransactionController)              //Marcar una transaccion como pagada
     .post('/future-transaction', transactionController.createFutureTransactionController)   // Crear una nueva transacción futura
+    .delete("/:id", transactionController.deleteTransaction)                                // Borra una transaccion por id 
 
 export default router;

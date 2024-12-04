@@ -155,6 +155,18 @@ const updateIsPaidTransactionController = async (req, res, next) => {
   }
 };
 
+const deleteTransaction = async (req, res) => {
+  const { id } = req.params; // Obtenemos el ID de la transacción desde la URL
+
+  try {
+    const result = await transactionService.deleteTransaction(id);
+    return res.status(200).json(true);
+  } catch (error) {
+    console.error(`Error in deleteTransaction: ${error.message}`);
+    return res.status(400).json({ error: error.message });
+  }
+};
+
 export default {
   getTransactionsByAccountIdController,
   createTransactionController,
@@ -162,4 +174,5 @@ export default {
   getTransactionByIdController,
   createFutureTransactionController,
   updateIsPaidTransactionController,
+  deleteTransaction
 };
