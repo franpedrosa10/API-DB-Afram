@@ -85,7 +85,7 @@ const sendTransferEmailService = async (
                         <li><strong>Cuenta de origen:</strong>  ${sourceUser.last_name}, ${sourceUser.real_name}</li>
                         <li><strong>Cuenta de destino:</strong> ${destinationUser.last_name}, ${destinationUser.real_name}</li>
                         </ul>
-                        <p>Este es un correo automatizado. Por favor, no respondas a este mensaje. Si tienes alguna duda o necesitas asistencia adicional, contáctanos a nuestro servicio de atención al cliente al <strong style="color: #007BFF;">2235123456</strong> o visita nuestra página de soporte en <a href="http://localhost:4200/" style="color: #007BFF; text-decoration: underline;">nuestro sitio web.</a></p>
+                        <p>Este es un correo automatizado. Por favor, no respondas a este mensaje. Si tienes alguna duda o necesitas asistencia adicional, visita nuestra página de soporte en <a href="http://localhost:4200/" style="color: #007BFF; text-decoration: underline;">nuestro sitio web.</a></p>
                             
                         </div>
                         <div class="footer">
@@ -185,7 +185,7 @@ const sendEmailWithToken = async (to, recoveryToken) => {
                             <p>${recoveryToken}</p>
                         </div>
                         
-                        <p>Este es un correo automatizado. Por favor, no respondas a este mensaje. Si tienes alguna duda o necesitas asistencia adicional, contáctanos a nuestro servicio de atención al cliente al <strong style="color: #007BFF;">2235123456</strong> o visita nuestra página de soporte en <a href="http://localhost:4200/" style="color: #007BFF; text-decoration: underline;">nuestro sitio web.</a></p>
+                        <p>Este es un correo automatizado. Por favor, no respondas a este mensaje. Si tienes alguna duda o necesitas asistencia adicional, visita nuestra página de soporte en <a href="http://localhost:4200/" style="color: #007BFF; text-decoration: underline;">nuestro sitio web.</a></p>
                         </div>
                         <div class="footer">
                             <p>Gracias por confiar en nuestros servicios.</p>

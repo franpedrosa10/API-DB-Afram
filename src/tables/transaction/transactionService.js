@@ -50,23 +50,24 @@ const createTransaction = async (transactionData) => {
 
 const createFutureTransaction = async (transactionData) => {
   try {
-    const localDate = new Date();
-    localDate.setHours(1, 0, 0, 0);
 
-    const scheduledDate = transactionData.transaction_date
-      ? new Date(transactionData.transaction_date)
-      : localDate;
+      const localDate = new Date();
+      localDate.setHours(1, 0, 0, 0);
+
+      const transactionDate = transactionData.transaction_date
+      ? new Date(transactionData.transaction_date).toISOString().slice(0, 19).replace('T', ' ')
+      : localDate.toISOString().slice(0, 19).replace('T', ' ');
+
 
     await knex(TABLE_NAME).insert({
       amount: transactionData.amount,
-      transaction_date: scheduledDate, 
+      transaction_date: transactionDate, 
       source_account_id: transactionData.source_account_id,
       destination_account_id: transactionData.destination_account_id,
       transaction_type: transactionData.transaction_type,
       is_paid: "no",
     });
 
-   
     const newTransaction = await knex(TABLE_NAME)
       .where("amount", transactionData.amount)
       .andWhere("source_account_id", transactionData.source_account_id)

@@ -5,10 +5,10 @@ import userService from "../user/userService.js";
 
 // Enviar mail por transferencia
 const sendTransferEmail = async (req, res, next) => {
-  const { to, amount, sourceAccountId, destinationAccountId } = req.body;
+  const { to, amount, sourceUserId, destinationUserId } = req.body;
 
-  const sourceUser = await userService.getOneUser(sourceAccountId);
-  const destinationUser = await userService.getOneUser(destinationAccountId);
+  const sourceUser = await userService.getOneUser(sourceUserId);
+  const destinationUser = await userService.getOneUser(destinationUserId);
 
   try {
     await emailService.sendTransferEmailService(
