@@ -17,7 +17,8 @@ router
     .get('/email/:email', userController.getUserIdByEmailController)        // Obtener Id por email
     .put('/change-password-by-id/:id', userController.changePasswordById)   // Cambiar la contraseña con el token
     .get('/reset-token/:token', userController.getUserIdByResetToken)       // Obtener id por token
-    .patch("/users/block/:dni", userController.toggleUserBlockedStatus)     // Cambia el campo is_bloqued
+    .patch("/unblock", userController.toggleUserBlockedStatus)              // Cambia el campo is_bloqued a no
+    .patch("/block", userController.blockUser)                              // Cambia el campo is_bloqued a yes
 
 
 export default router;

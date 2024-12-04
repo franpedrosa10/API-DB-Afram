@@ -205,22 +205,23 @@ const getUserIdByResetToken = async (req, res) => {
 };
 
 // Cambiar el estado de is_blocked a partir del DNI
-export const toggleUserBlockedStatus = async (req, res) => {
+const blockUser = async (req, res) => {
+
+  const { dni }  = req.body; 
+  
+  
   try {
-    const { dni } = req.params; // DNI en la URL
-    const { is_blocked } = req.body; // Valor de 'isBlocked' en el cuerpo de la solicitud
 
-    if (!["yes", "no"].includes(is_blocked)) {
-      return res.status(400).json({
-        message: "Invalid value for is_blocked. Use 'yes' or 'no'.",
-      });
-    }
-
-    const result = await usersService.toggleUserBlockedStatusByDNI(dni, is_blocked);
+    console.log("Hola 1");
     const id = await usersService.getUserIdByDNI(dni);
-    const email = await usersService.getOneUser(id);
-    const token = await usersService.generateRecoveryToken(id);
-    const sendEmail = await emailService.sendEmailWithToken(email, token)
+    console.log("ID:", id);
+    const  recoveryToken = await usersService.generateRecoveryToken(id);
+    const user = await usersService.getOneUser(id);
+    console.log("User",user.email);
+    console.log("Token",token);
+    await emailService.sendEmailWithToken(user.email, recoveryToken);
+    const result = await usersService.toggleUserBlockedStatusByDNI(dni,"yes");
+    console.log("Resultado final brodi",result);
 
     if (!result) {
       return res.status(404).json(false);
@@ -233,6 +234,28 @@ export const toggleUserBlockedStatus = async (req, res) => {
     });
   }
 };
+
+const toggleUserBlockedStatus = async (req, res) => {
+
+  const { dni }  = req.body; 
+  
+  try {
+    const result = await usersService.toggleUserBlockedStatusByDNI(dni, "no");
+
+    if (!result) {
+      return res.status(404).json(false);
+    }
+
+    return res.status(200).json(true);
+  } catch (error) {
+    return res.status(500).json({
+      message: `Error updating user's blocked status: ${error.message}`,
+    });
+  }
+};
+
+
+
 
 export default {
   getAllUsers,
@@ -248,5 +271,6 @@ export default {
   getUserIdByEmailController,
   changePasswordById,
   getUserIdByResetToken,
-  toggleUserBlockedStatus
+  toggleUserBlockedStatus,
+  blockUser
 };

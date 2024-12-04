@@ -17,6 +17,7 @@ Sigue estos pasos para configurar el proyecto en tu máquina:
 - npm i
 - npm i bcrypt
 - npm i nodemailer
+- npm i crypto 
 - npm i express
 - npm i cors
 - npm i mysql2

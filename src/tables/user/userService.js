@@ -287,24 +287,25 @@ const getUserIdByToken = async (resetToken) => {
 // Generar un token de recuperación de 6 dígitos y guardarlo en la base de datos
 const generateRecoveryToken = async (id) => {
   try {
-    // Generar un token de 6 dígitos aleatorios
-    const token = crypto.randomInt(100000, 999999).toString(); // Genera un número aleatorio entre 100000 y 999999
 
-    // Actualiza el token en la base de datos (sin fecha de expiración)
+    const token = crypto.randomInt(100000, 999999).toString(); 
+
+    console.log("Adentro del token: ",token)
+    console.log("Id del pebete: ",id)
+
+   
     const rowsUpdated = await knex(TABLE_NAME)
-      .where(id)
-      .update({
-        reset_token: token,
-      });
+    .where({ id }) // Aquí "id" es tanto el nombre de la columna como el valor de la variable.
+    .update({ reset_token: token });
+      
+      if (rowsUpdated === 0) {
+        return false; 
+      } 
+    
 
-
-    if (rowsUpdated === 0) {
-      return false; // Si no se actualiza ningún registro, retorna false
-    }
-
-    return token; // Retorna el token generado si todo fue bien
+    return token; 
   } catch (error) {
-    throw new Error(`Error al generar el token: ${error.message}`); // Lanza un error en caso de fallo
+    throw new Error(`Error al generar el token: ${error.message}`); 
   }
 };
 
@@ -322,14 +323,14 @@ const toggleUserBlockedStatusByDNI = async (dni, isBlocked) => {
     }
 
     const rowsUpdated = await knex(TABLE_NAME)
-      .where({ dni })
-      .update({ is_blocked: isBlocked });
+      .where( "dni", dni )
+      .update( { is_blocked : isBlocked });
 
     if (rowsUpdated === 0) {
-      return false; // Si no se actualiza ningún registro
+      return false; 
     }
 
-    return true; // Retorna true si todo salió bien
+    return true; 
   } catch (error) {
     throw new Error(`Error updating is_blocked status: ${error.message}`);
   }
