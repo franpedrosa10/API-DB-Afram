@@ -16,7 +16,8 @@ router
     .get('/id/:dni', userController.getUserIdByDNI)                         // Obtener ID de usuario por dni
     .get('/email/:email', userController.getUserIdByEmailController)        // Obtener Id por email
     .put('/change-password-by-id/:id', userController.changePasswordById)   // Cambiar la contraseña con el token
-    .get('/reset-token/:token', userController.getUserIdByResetToken);      // Obtener id por token
+    .get('/reset-token/:token', userController.getUserIdByResetToken)       // Obtener id por token
+    .patch("/users/block/:dni", userController.toggleUserBlockedStatus)     // Cambia el campo is_bloqued
 
 
 export default router;

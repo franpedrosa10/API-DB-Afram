@@ -308,6 +308,34 @@ const generateRecoveryToken = async (id) => {
   }
 };
 
+// Cambiar el estado de is_blocked a partir del DNI
+const toggleUserBlockedStatusByDNI = async (dni, isBlocked) => {
+  try {
+    if (!["yes", "no"].includes(isBlocked)) {
+      throw new Error("Invalid value for is_blocked. Use 'yes' or 'no'.");
+    }
+
+    const user = await knex(TABLE_NAME).where({ dni }).first();
+
+    if (!user) {
+      throw new Error("User with the provided DNI does not exist.");
+    }
+
+    const rowsUpdated = await knex(TABLE_NAME)
+      .where({ dni })
+      .update({ is_blocked: isBlocked });
+
+    if (rowsUpdated === 0) {
+      return false; // Si no se actualiza ningún registro
+    }
+
+    return true; // Retorna true si todo salió bien
+  } catch (error) {
+    throw new Error(`Error updating is_blocked status: ${error.message}`);
+  }
+};
+
+
 export default {
   getAllUsers,
   getOneUser,
@@ -322,5 +350,6 @@ export default {
   getUserIdByEmail,
   changePasswordById,
   getUserIdByToken,
-  generateRecoveryToken
+  generateRecoveryToken,
+  toggleUserBlockedStatusByDNI
 };

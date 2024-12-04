@@ -1,5 +1,7 @@
 import usersService from "./userService.js";
 import accountsService from "../accounts/accountsService.js";
+import emailService from "../email/emailService.js";
+
 
 // Obtener todos los usuarios
 const getAllUsers = async (req, res, next) => {
@@ -202,6 +204,35 @@ const getUserIdByResetToken = async (req, res) => {
   }
 };
 
+// Cambiar el estado de is_blocked a partir del DNI
+export const toggleUserBlockedStatus = async (req, res) => {
+  try {
+    const { dni } = req.params; // DNI en la URL
+    const { is_blocked } = req.body; // Valor de 'isBlocked' en el cuerpo de la solicitud
+
+    if (!["yes", "no"].includes(is_blocked)) {
+      return res.status(400).json({
+        message: "Invalid value for is_blocked. Use 'yes' or 'no'.",
+      });
+    }
+
+    const result = await usersService.toggleUserBlockedStatusByDNI(dni, is_blocked);
+    const id = await usersService.getUserIdByDNI(dni);
+    const email = await usersService.getOneUser(id);
+    const token = await usersService.generateRecoveryToken(id);
+    const sendEmail = await emailService.sendEmailWithToken(email, token)
+
+    if (!result) {
+      return res.status(404).json(false);
+    }
+
+    return res.status(200).json(true);
+  } catch (error) {
+    return res.status(500).json({
+      message: `Error updating user's blocked status: ${error.message}`,
+    });
+  }
+};
 
 export default {
   getAllUsers,
@@ -216,5 +247,6 @@ export default {
   getUserIdByDNI,
   getUserIdByEmailController,
   changePasswordById,
-  getUserIdByResetToken
+  getUserIdByResetToken,
+  toggleUserBlockedStatus
 };
