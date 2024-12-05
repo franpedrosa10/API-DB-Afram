@@ -185,6 +185,8 @@ const sendEmailWithToken = async (to, recoveryToken) => {
                             <p>${recoveryToken}</p>
                         </div>
                         
+                        
+                        <p>Haz clic <a href="http://localhost:4200/new-password" style="color: #007BFF; text-decoration: underline;">aqui.</a> para restablecer tu contraseña.</p>
                         <p>Este es un correo automatizado. Por favor, no respondas a este mensaje. Si tienes alguna duda o necesitas asistencia adicional, visita nuestra página de soporte en <a href="http://localhost:4200/" style="color: #007BFF; text-decoration: underline;">nuestro sitio web.</a></p>
                         </div>
                         <div class="footer">

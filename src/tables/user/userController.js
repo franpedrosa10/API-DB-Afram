@@ -206,22 +206,34 @@ const getUserIdByResetToken = async (req, res) => {
 
 // Cambiar el estado de is_blocked a partir del DNI
 const blockUser = async (req, res) => {
+  const { dni } = req.body;
 
-  const { dni }  = req.body; 
-  
-  
   try {
 
-    console.log("Hola 1");
+    // Obtén el ID del usuario por DNI
     const id = await usersService.getUserIdByDNI(dni);
-    console.log("ID:", id);
-    const  recoveryToken = await usersService.generateRecoveryToken(id);
+
+    if (!id) {
+      return res.status(404).json({ error: "User not found by DNI" });
+    }
+
+
+    // Obtén al usuario completo
     const user = await usersService.getOneUser(id);
-    console.log("User",user.email);
-    console.log("Token",token);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found by ID" });
+    }
+
+    // Generar el token de recuperación
+    const recoveryToken = await usersService.generateRecoveryToken(id);
+
+
+    // Enviar el correo con el token
     await emailService.sendEmailWithToken(user.email, recoveryToken);
-    const result = await usersService.toggleUserBlockedStatusByDNI(dni,"yes");
-    console.log("Resultado final brodi",result);
+
+    // Bloquear al usuario
+    const result = await usersService.toggleUserBlockedStatusByDNI(dni, "yes");
 
     if (!result) {
       return res.status(404).json(false);
@@ -234,6 +246,7 @@ const blockUser = async (req, res) => {
     });
   }
 };
+
 
 const toggleUserBlockedStatus = async (req, res) => {
 

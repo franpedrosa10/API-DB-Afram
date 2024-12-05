@@ -211,6 +211,7 @@ const toggleUserAdminStatus = async (userId, userType) => {
 
 // Obtener ID de usuario por DNI
 const getUserIdByDNI = async (dni) => {
+
   const user = await knex(TABLE_NAME).select("id").where("dni", dni).first();
 
   if (!user) {
@@ -287,27 +288,28 @@ const getUserIdByToken = async (resetToken) => {
 // Generar un token de recuperación de 6 dígitos y guardarlo en la base de datos
 const generateRecoveryToken = async (id) => {
   try {
+    const token = crypto.randomInt(100000, 999999).toString(); // Genera un token aleatorio
 
-    const token = crypto.randomInt(100000, 999999).toString(); 
+    console.log("Adentro del token: ", token);
+    console.log("Id recibido: ", id);
 
-    console.log("Adentro del token: ",token)
-    console.log("Id del pebete: ",id)
+    // Ajustar la condición de `.where` dinámicamente
+    const whereCondition = typeof id === "object" ? id : { id };
 
-   
     const rowsUpdated = await knex(TABLE_NAME)
-    .where({ id }) // Aquí "id" es tanto el nombre de la columna como el valor de la variable.
-    .update({ reset_token: token });
-      
-      if (rowsUpdated === 0) {
-        return false; 
-      } 
-    
+      .where(whereCondition) // Esto soportará tanto { id: valor } como un objeto completo
+      .update({ reset_token: token });
 
-    return token; 
+    if (rowsUpdated === 0) {
+      return false; // Si no se actualizó ninguna fila, devuelve falso
+    }
+
+    return token; // Devuelve el token generado
   } catch (error) {
-    throw new Error(`Error al generar el token: ${error.message}`); 
+    throw new Error(`Error al generar el token: ${error.message}`);
   }
 };
+
 
 // Cambiar el estado de is_blocked a partir del DNI
 const toggleUserBlockedStatusByDNI = async (dni, isBlocked) => {
