@@ -225,15 +225,11 @@ const blockUser = async (req, res) => {
       return res.status(404).json({ error: "User not found by ID" });
     }
 
-    // Generar el token de recuperación
-    const recoveryToken = await usersService.generateRecoveryToken(id);
 
-
-    // Enviar el correo con el token
-    await emailService.sendEmailWithToken(user.email, recoveryToken);
+    const attempts = user.login_attempts + 1;
 
     // Bloquear al usuario
-    const result = await usersService.toggleUserBlockedStatusByDNI(dni, "yes");
+    const result = await usersService.editAttemptsUser(dni, attempts );
 
     if (!result) {
       return res.status(404).json(false);
@@ -248,12 +244,12 @@ const blockUser = async (req, res) => {
 };
 
 
-const toggleUserBlockedStatus = async (req, res) => {
+const unblockUser = async (req, res) => {
 
   const { dni }  = req.body; 
   
   try {
-    const result = await usersService.toggleUserBlockedStatusByDNI(dni, "no");
+    const result = await usersService.editAttemptsUser(dni,0);
 
     if (!result) {
       return res.status(404).json(false);
@@ -284,6 +280,6 @@ export default {
   getUserIdByEmailController,
   changePasswordById,
   getUserIdByResetToken,
-  toggleUserBlockedStatus,
+  unblockUser,
   blockUser
 };

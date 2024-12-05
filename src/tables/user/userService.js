@@ -312,11 +312,8 @@ const generateRecoveryToken = async (id) => {
 
 
 // Cambiar el estado de is_blocked a partir del DNI
-const toggleUserBlockedStatusByDNI = async (dni, isBlocked) => {
+const editAttemptsUser = async (dni, login_attempts ) => {
   try {
-    if (!["yes", "no"].includes(isBlocked)) {
-      throw new Error("Invalid value for is_blocked. Use 'yes' or 'no'.");
-    }
 
     const user = await knex(TABLE_NAME).where({ dni }).first();
 
@@ -326,7 +323,7 @@ const toggleUserBlockedStatusByDNI = async (dni, isBlocked) => {
 
     const rowsUpdated = await knex(TABLE_NAME)
       .where( "dni", dni )
-      .update( { is_blocked : isBlocked });
+      .update( { login_attempts  : login_attempts  });
 
     if (rowsUpdated === 0) {
       return false; 
@@ -354,5 +351,5 @@ export default {
   changePasswordById,
   getUserIdByToken,
   generateRecoveryToken,
-  toggleUserBlockedStatusByDNI
+  editAttemptsUser
 };
