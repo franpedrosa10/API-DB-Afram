@@ -21,7 +21,6 @@ const createNotification = async (notificationData) => {
 // Marcar notificación como leída
 const markAsRead = async (id) => {
   try {
-    console.log('ID:::: '  + id);
     const result = await knex(TABLE_NAME)
       .where("id", id) 
       .update({ is_read: "yes" });
@@ -49,17 +48,6 @@ const deleteNotification = async (id) => {
   }
 };
 
-const deleteAllNotifications = async (userId) => {
-  try {
-    const result = await knex(TABLE_NAME).where({ user_id: userId }).del();  
-    if (result === 0) {
-      throw new Error("Notification not found");
-    }
-    return true;
-  } catch (error) {
-    throw new Error(`Error deleting notification: ${error.message}`);
-  }
-};
 
 // Obtener todas las notificaciones de un usuario
 const getNotificationsByUserId = async (userId) => {
@@ -70,10 +58,38 @@ const getNotificationsByUserId = async (userId) => {
   }
 };
 
+
+// Borrar todas las notificaciones de un 
+const deleteAllNotifications = async (user_id) => {
+  try {
+    const result = await knex(TABLE_NAME).where("user_id", user_id).del();
+    if (result === 0) {
+      throw new Error("Notification not found");
+    }
+    return true;
+  } catch (error) {
+    throw new Error(`Error deleting notification: ${error.message}`);
+  }
+};
+
+// Marcar todas las notificaciones de un usuario como leidas
+const markAsAllRead = async (user_id) => {
+  try {
+    const result = await knex(TABLE_NAME).where("user_id", user_id).update({ is_read: "yes" });;
+    if (result === 0) {
+      throw new Error("Notification not found");
+    }
+    return true;
+  } catch (error) {
+    throw new Error(`Error marking notification as read: ${error.message}`);
+  }
+};
+
 export default {
   createNotification,
   markAsRead,
   deleteNotification,
   getNotificationsByUserId,
-  deleteAllNotifications
+  deleteAllNotifications,
+  markAsAllRead
 };

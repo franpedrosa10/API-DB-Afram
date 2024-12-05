@@ -33,21 +33,10 @@ const deleteNotificationController = async (req, res, next) => {
   }
 };
 
-// Eliminar todas las notificaciones
-const deleteAllNotificationsController = async (req, res, next) => {
-  const { userId } = req.params; 
-  try {
-    const result = await notificationsService.deleteAllNotifications(userId);
-    return res.status(200).json({ success: result });
-  } catch (error) {
-    next(error);
-  }
-};
-
 // Obtener todas las notificaciones de un usuario
 const getNotificationsByUserIdController = async (req, res, next) => {
   const { id } = req.params;
-  // console.log('User id', id);
+
   try {
     const notifications = await notificationsService.getNotificationsByUserId(id);
     return res.status(200).json(notifications);
@@ -56,10 +45,34 @@ const getNotificationsByUserIdController = async (req, res, next) => {
   }
 };
 
+// Eliminar todas las notificaciones
+const deleteAllNotificationsController = async (req, res, next) => {
+  const { user_id } = req.params; 
+  try {
+    const result = await notificationsService.deleteAllNotifications(user_id);
+    return res.status(200).json({ success: result });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Marcar todas las notificaciones de un usuario como leidas
+const markAsAllReadController = async (req, res, next) => {
+  const { user_id } = req.body; 
+  try {
+    const result = await notificationsService.markAsAllRead(user_id);
+    return res.status(200).json({ success: result });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
 export default {
   createNotificationController,
   markAsReadController,
   deleteNotificationController,
   getNotificationsByUserIdController,
-  deleteAllNotificationsController
+  deleteAllNotificationsController,
+  markAsAllReadController
 };
