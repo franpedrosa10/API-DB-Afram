@@ -49,6 +49,18 @@ const deleteNotification = async (id) => {
   }
 };
 
+const deleteAllNotifications = async (userId) => {
+  try {
+    const result = await knex(TABLE_NAME).where({ user_id: userId }).del();  
+    if (result === 0) {
+      throw new Error("Notification not found");
+    }
+    return true;
+  } catch (error) {
+    throw new Error(`Error deleting notification: ${error.message}`);
+  }
+};
+
 // Obtener todas las notificaciones de un usuario
 const getNotificationsByUserId = async (userId) => {
   try {
@@ -63,4 +75,5 @@ export default {
   markAsRead,
   deleteNotification,
   getNotificationsByUserId,
+  deleteAllNotifications
 };
