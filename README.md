@@ -14,14 +14,7 @@ Sigue estos pasos para configurar el proyecto en tu máquina:
 
 - git clone https://github.com/franpedrosa10/API-DB-Afram.git
 - cd API-DB-Afram
-- npm i
-- npm i bcrypt
-- npm i nodemailer
-- npm i crypto 
-- npm i express
-- npm i cors
-- npm i mysql2
-- npm i nodemon
+- npm install
 
 Ejecuta npm run dev para correrlo.
 
