@@ -97,10 +97,43 @@ const getThreadsById = async (id) => {
   }
 };
 
+// Eliminar thread
+const deleteThread = async (id) => {
+  try {
+    const result = await knex(TABLE_NAME).where({ id }).del();
+    if (result === 0) {
+      throw new Error("Thread not found");
+    }
+    return true;
+  } catch (error) {
+    throw new Error(`Error deleting thread: ${error.message}`);
+  }
+};
+
+// Borrar todas los thread de un user
+const deleteAllThreads = async (user_id) => {
+  try {
+    const result = await knex(TABLE_NAME)
+      .where("user_id", user_id)
+      .andWhere("support_status", "closed")
+      .del();
+
+    if (result === 0) {
+      throw new Error("No closed threads found to delete");
+    }
+    return true;
+  } catch (error) {
+    throw new Error(`Error deleting threads: ${error.message}`);
+  }
+};
+
+
 export default {
   getAllThreads,
   getThreadsByUserId,
   createThread,
   updateThreadStatus,
   getThreadsById,
+  deleteThread,
+  deleteAllThreads
 };

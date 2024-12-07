@@ -80,11 +80,34 @@ const getThreadsByIdController = async (req, res, next) => {
   }
 };
 
+// Eliminar thread
+const deleteThreadController = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const result = await supportService.deleteThread(id);
+    return res.status(200).json({ success: result });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Eliminar todos las thread de un user
+const deleteAllThreadsController = async (req, res, next) => {
+  const { user_id } = req.params; 
+  try {
+    const result = await supportService.deleteAllThreads(user_id);
+    return res.status(200).json({ success: result });
+  } catch (error) {
+    next(error);
+  }
+};
 
 export default {
     getAllThreadsController,
     getThreadsByUserIdController,
     createThreadController,
     updateThreadStatusController,
-    getThreadsByIdController
+    getThreadsByIdController,
+    deleteThreadController,
+    deleteAllThreadsController
 };
