@@ -85,18 +85,7 @@ const markAsAllRead = async (user_id) => {
   }
 };
 
-// Borrar las notificaciones seleccionadas de un usuario 
-const deleteSelectedNotifications = async (ids) => {
-  try {
-    const result = await knex(TABLE_NAME).whereIn('id', ids).del();
-    if (result === 0) {
-      throw new Error('No notifications found to delete');
-    }
-    return result;
-  } catch (error) {
-    throw new Error(`Error deleting notifications: ${error.message}`);
-  }
-};
+
 
 // Marcar las notificaciones seleccionadas de un usuario como leidas
 const markSelectedAsRead = async (ids) => {
@@ -122,6 +111,5 @@ export default {
   getNotificationsByUserId,
   deleteAllNotifications,
   markAsAllRead,
-  deleteSelectedNotifications,
   markSelectedAsRead
 };

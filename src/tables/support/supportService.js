@@ -26,7 +26,7 @@ const getAllThreads = async () => {
 
 const getThreadsByUserId = async (user_id) => {
   try {
-    const threads = await knex(TABLE_NAME).select("*").where({ user_id: user_id });
+    const threads = await knex(TABLE_NAME).select("*").where({ user_id: user_id }).orderBy("id", "desc");
 
     for (let thread of threads) {
       const messages = await supportMessages.getMessagesByThreadId(thread.id);

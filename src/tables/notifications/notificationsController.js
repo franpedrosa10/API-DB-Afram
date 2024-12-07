@@ -67,16 +67,6 @@ const markAsAllReadController = async (req, res, next) => {
   }
 };
 
-// Borrar las notificaciones seleccionadas de un usuario 
-const deleteSelectedNotificationsController = async (req, res, next) => {
-  const { ids } = req.params;
-  try {
-    const result = await notificationsService.deleteSelectedNotifications(ids);
-    return res.status(200).json({ success: true, deletedCount: result });
-  } catch (error) {
-    next(error);
-  }
-};
 
 // Marcar las notificaciones seleccionadas de un usuario como leidas
 const markSelectedAsReadController = async (req, res, next) => {
@@ -98,6 +88,5 @@ export default {
   getNotificationsByUserIdController,
   deleteAllNotificationsController,
   markAsAllReadController,
-  deleteSelectedNotificationsController,
   markSelectedAsReadController
 };
