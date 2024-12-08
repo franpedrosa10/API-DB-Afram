@@ -1,5 +1,5 @@
 import knex from "../../database/knex.js";
-const TABLE_NAME = "Cards";
+const TABLE_NAME = "cards";
 
 // Obtener todas las tarjetas
 const getAllCards = async () => {

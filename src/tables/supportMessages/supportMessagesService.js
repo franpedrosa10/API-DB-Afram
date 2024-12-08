@@ -1,5 +1,5 @@
 import knex from "../../database/knex.js";
-const TABLE_NAME = "SupportMessages";
+const TABLE_NAME = "supportmessages";
 
 const getMessagesByThreadId = async (threadId) => {
   try {

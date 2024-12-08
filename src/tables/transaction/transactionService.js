@@ -1,5 +1,5 @@
 import knex from "../../database/knex.js";
-const TABLE_NAME = "Transactions";
+const TABLE_NAME = "transactions";
 
 // Obtener transacciones por ID de cuenta
 const getTransactionsByAccountId = async (accountId) => {

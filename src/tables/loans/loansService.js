@@ -1,5 +1,5 @@
 import knex from "../../database/knex.js";
-const TABLE_NAME = "Loans";
+const TABLE_NAME = "loans";
 
 // Obtener todos los préstamos
 const getAllLoans = async () => {

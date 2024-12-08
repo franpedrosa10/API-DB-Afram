@@ -1,7 +1,7 @@
 import knex from "../../database/knex.js";
 import bcrypt from "bcrypt";
 import crypto from "crypto"; 
-const TABLE_NAME = "Users";
+const TABLE_NAME = "users";
 
 // Obtener todos los usuarios
 const getAllUsers = async () => {

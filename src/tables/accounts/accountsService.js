@@ -1,5 +1,5 @@
 import knex from "../../database/knex.js";
-const TABLE_NAME = "Accounts";
+const TABLE_NAME = "accounts";
 
 // Obtener una cuenta por ID
 const getAccount = async (accountId) => {
@@ -155,15 +155,15 @@ const getAccountIdByCBUService = async (cbu) => {
 // Obtener cuentas por id o DNI
 const getAccountsByUserIdOrDni = async (identifier) => {
   try {
-    const user = await knex("Users")
+    const user = await knex("users")
       .select("id")
       .where({ dni: identifier })
       .first();
 
     if (user) {
-      return await knex("Accounts").where({ user_id: user.id });
+      return await knex(TABLE_NAME).where({ user_id: user.id });
     } else {
-      return await knex("Accounts").where({ user_id: identifier });
+      return await knex(TABLE_NAME).where({ user_id: identifier });
     }
   } catch (error) {
     throw new Error(`Error fetching accounts: ${error.message}`);

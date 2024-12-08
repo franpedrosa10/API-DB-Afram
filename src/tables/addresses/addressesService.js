@@ -1,5 +1,5 @@
 import knex from "../../database/knex.js";
-const TABLE_NAME = "Addresses";
+const TABLE_NAME = "addresses";
 
 // Obtener una dirección por ID
 const getAddressById = async (id) => {
@@ -98,7 +98,7 @@ const getAddressByUserId = async (userId) => {
   try {
     if (!userId) throw new Error("User ID is required");
 
-    const addresses = await knex("Addresses").where("user_id", userId).first();
+    const addresses = await knex(TABLE_NAME).where("user_id", userId).first();
 
     return addresses;
   } catch (error) {

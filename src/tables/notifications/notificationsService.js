@@ -1,5 +1,5 @@
 import knex from "../../database/knex.js";
-const TABLE_NAME = "Notifications";
+const TABLE_NAME = "notifications";
 
 // Crear notificación
 const createNotification = async (notificationData) => {

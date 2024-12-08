@@ -1,5 +1,5 @@
 import knex from "../../database/knex.js";
-const TABLE_NAME = "InterestRates";
+const TABLE_NAME = "interestrates";
 
 // Obtener todas las tasas de interés
 const getAllInterestRates = async () => {

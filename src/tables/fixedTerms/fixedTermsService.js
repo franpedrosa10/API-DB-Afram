@@ -1,5 +1,5 @@
 import knex from "../../database/knex.js";
-const TABLE_NAME = "FixedTerms";
+const TABLE_NAME = "fixedterms";
 
 // Obtener todos los plazos fijos
 const getAllFixedTerms = async () => {
