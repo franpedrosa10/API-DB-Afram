@@ -30,8 +30,9 @@ const getOneUser = async (req, res, next) => {
 const createUser = async (req, res, next) => {
   const usuario = req.body;
   try {
+    const token = await usersService.generateToken(result);
     const result = await usersService.createUser(usuario);
-    return res.status(201).json(result);
+    return res.status(201).json({ id: result.id, token });
   } catch (error) {
     next(error);
   }
@@ -72,10 +73,11 @@ const verifyUser = async (req, res, next) => {
   } = req;
   try {
     const result = await usersService.verifyUser(username, dni, password);
+    const token = await usersService.generateToken(result);
     if (!result) {
       return res.status(401).json({ error: "Incorrect credentials" });
     }
-    return res.status(200).json(result);
+    return res.status(200).json({ id: result.id, token });
   } catch (error) {
     next(error);
   }
@@ -262,7 +264,6 @@ const unblockUser = async (req, res) => {
     });
   }
 };
-
 
 
 

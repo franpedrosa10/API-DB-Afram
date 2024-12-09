@@ -23,7 +23,7 @@ const getFixedTermById = async (id) => {
 // Crear un nuevo plazo fijo
 const createFixedTerm = async (fixedTermData) => {
   try {
-    return await knex("FixedTerms").insert(fixedTermData);
+    return await knex(TABLE_NAME).insert(fixedTermData);
   } catch (error) {
     throw new Error(`Error creating fixed term: ${error.message}`);
   }

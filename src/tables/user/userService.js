@@ -1,6 +1,8 @@
 import knex from "../../database/knex.js";
 import bcrypt from "bcrypt";
-import crypto from "crypto"; 
+import crypto from "crypto";
+import jwt from  "jsonwebtoken";
+const SECRET_KEY = process.env.CLAVE;
 const TABLE_NAME = "users";
 
 // Obtener todos los usuarios
@@ -133,7 +135,7 @@ const verifyUser = async (username, dni, password) => {
       .first();
 
     if (user && (await bcrypt.compare(password, user.hashed_password))) {
-      return user.id;
+      return user;
     }
 
     return false;
@@ -335,6 +337,23 @@ const editAttemptsUser = async (dni, login_attempts ) => {
   }
 };
 
+// Función para generar el token
+const generateToken = (user) => {
+  const payload = { 
+    id: user.id,
+    real_name: user.real_name,
+    name_user: user.name_user,
+    last_name: user.last_name,
+    email: user.email,
+    dni: user.dni,
+    phone: user.phone,
+    user_type: user.user_type,
+    is_Active: user.is_Active
+  };
+
+  return jwt.sign(payload, SECRET_KEY); 
+};
+
 
 export default {
   getAllUsers,
@@ -351,5 +370,6 @@ export default {
   changePasswordById,
   getUserIdByToken,
   generateRecoveryToken,
-  editAttemptsUser
+  editAttemptsUser,
+  generateToken
 };

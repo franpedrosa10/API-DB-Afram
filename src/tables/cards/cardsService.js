@@ -26,7 +26,7 @@ const getCardById = async (cardId) => {
 // Crear una nueva tarjeta
 const createCard = async (cardData) => {
   try {
-    const user = await knex("Users")
+    const user = await knex("users")
       .select("real_name", "last_name")
       .where("id", cardData.user_id)
       .first();

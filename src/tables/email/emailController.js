@@ -11,17 +11,30 @@ const sendTransferEmail = async (req, res, next) => {
   const destinationUser = await userService.getOneUser(destinationUserId);
 
   try {
+    // Verificación de la existencia de los usuarios antes de continuar
+    if (!sourceUser || !destinationUser) {
+      return res.status(400).json({ message: 'Usuario no encontrado' });
+    }
+
+    // Enviar el correo de la transferencia
     await emailService.sendTransferEmailService(
       to,
       amount,
       sourceUser,
       destinationUser
     );
-    console.log("Correo enviado exitosamente");
+
+    // Responder con éxito si no hay problemas
+    return res.status(200).json(true);
   } catch (error) {
+    // Manejo de error y respuesta según tipo
     console.error("Error al enviar correo:", error);
+    
+    // Responder con error 500 en caso de fallo interno
+    return res.status(500).json({ message: 'Error interno del servidor' });
   }
 };
+
 
 // Enviar correo de recuperación de contraseña con el token
 const sendRecoveryToken = async (req, res, next) => {
