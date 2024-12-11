@@ -30,8 +30,10 @@ const getOneUser = async (req, res, next) => {
 const createUser = async (req, res, next) => {
   const usuario = req.body;
   try {
-    const token = await usersService.generateToken(result);
     const result = await usersService.createUser(usuario);
+    const token = await usersService.generateToken(result);
+    console.log("Token: ", token);
+    console.log("User Id: ", result.id);
     return res.status(201).json({ id: result.id, token });
   } catch (error) {
     next(error);
@@ -74,6 +76,8 @@ const verifyUser = async (req, res, next) => {
   try {
     const result = await usersService.verifyUser(username, dni, password);
     const token = await usersService.generateToken(result);
+    console.log("Token: ", token);
+    console.log("User Id: ", result.id);
     if (!result) {
       return res.status(401).json({ error: "Incorrect credentials" });
     }
