@@ -51,7 +51,7 @@ const createUser = async (user) => {
 
     const newUser = await knex(TABLE_NAME).where("dni", user.dni).first();
 
-    return newUser.id;
+    return newUser;
   } catch (error) {
     throw error;
   }

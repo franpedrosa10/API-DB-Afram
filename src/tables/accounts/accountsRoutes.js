@@ -7,9 +7,9 @@ const router = express.Router();
 
 router
 .get('/', verifyUser, accountController.getAllAccounts)                                 // Para obtener todas las cuentas 
-.get('/:id', verifyUser, accountController.getAccount)                                  // Para obtener una cuenta específica 
-.put('/:id/balance', verifyUser, accountController.updateBalance)                       // Para crear una nueva cuenta 
-.post('/', verifyUser, accountController.createAccount)                                 // Actualizar balance 
+.get('/:id', verifyUser, accountController.getAccount)                                  // Para obtener una cuenta específica
+.put('/:id/balance', verifyUser, accountController.updateBalance)                        // Actualizar balance  
+.post('/', accountController.createAccount)                                  // Para crear una nueva cuenta 
 .put('/alias/:id', verifyUser, accountController.updateAccountAliasController)          // Para actualizar alias 
 .put('/deactivate', verifyUser, accountController.deactivateAccount)                   // Para desactivar una cuenta 
 .get('/alias/:alias', verifyUser,accountController.getAccountIdByAlias)                // Para obtener ID por alias 

@@ -9,9 +9,9 @@ const router = express.Router();
 router
     .get('/', verifyUser , verifyRol('admin'), userController.getAllUsers)      // Obtener todos los usuarios
     .get('/:userId', userController.getOneUser) // Obtener un usuario específico
-    .post('/register', verifyUser, userController.createUser)                           // Crear un nuevo usuario sin email ni telefono
+    .post('/register', userController.createUser)                           // Crear un nuevo usuario sin email ni telefono
     .post('/register-complete', verifyUser , verifyRol('admin'), userController.createUserComplete)// Crear un usuario completo
-    .put('/update/:id', verifyUser , userController.updateUser)  // Actualizar teléfono y email de un usuario
+    .put('/update/:id', verifyUser , userController.updateUser)          // Actualizar teléfono y email de un usuario
     .post('/verify', userController.verifyUser)                             // Verificar usuario, dni y contraseña
     .put('/change-password/:id', verifyUser, userController.changePassword) // Cambiar la contraseña
     .post('/toggle-user-status/:id', verifyUser , verifyRol('admin'), userController.toggleUserStatus)// Dar de alta o baja un usuario
