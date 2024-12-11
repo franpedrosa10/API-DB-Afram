@@ -4,6 +4,15 @@ const TABLE_NAME = "transactions";
 // Obtener transacciones por ID de cuenta
 const getTransactionsByAccountId = async (accountId) => {
   try {
+    const accountExists = await knex("accounts")
+      .select("id")
+      .where("id", accountId)
+      .first();
+
+    if (!accountExists) {
+      throw new Error("Account not found"); 
+    }
+
     const transactions = await knex(TABLE_NAME)
       .select("*")
       .where("source_account_id", accountId)
@@ -12,9 +21,10 @@ const getTransactionsByAccountId = async (accountId) => {
 
     return transactions;
   } catch (error) {
-    throw new Error(`Error fetching transactions: ${error.message}`);
+    throw error;
   }
 };
+
 
 // Crear una nueva transacción
 const createTransaction = async (transactionData) => {

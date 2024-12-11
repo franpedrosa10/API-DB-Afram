@@ -9,8 +9,11 @@ const getAllUsers = async (req, res, next) => {
     const result = await usersService.getAllUsers();
     return res.status(200).json(result);
   } catch (error) {
-    next(error);
-  }
+    if (error.message === "User not found") {
+      res.status(404).json({ message: "User not found" }); 
+    } else {
+      next(error); 
+    }  }
 };
 
 // Obtener un usuario por ID

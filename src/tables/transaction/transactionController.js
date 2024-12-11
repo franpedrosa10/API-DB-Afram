@@ -4,25 +4,26 @@ import transactionService from "./transactionService.js";
 const getTransactionsByAccountIdController = async (req, res, next) => {
   const { accountId } = req.params;
 
-  if (!accountId || isNaN(accountId)) {
-    return res
-      .status(400)
-      .json({ success: false, message: "Invalid accountId" });
-  }
-
   try {
-    const transactions = await transactionService.getTransactionsByAccountId(
-      accountId
-    );
-    return res.status(200).json(transactions);
+    const transactions = await transactionService.getTransactionsByAccountId(accountId);
+    return res.status(200).json(transactions); // Responde con las transacciones si existen
   } catch (error) {
-    next(error);
+    if (error.message === "Account not found") {
+      return res.status(404).json({ message: "Account not found" });
+    }else{
+      next(error);
+    }
   }
 };
 
 // Crear una nueva transacción
 const createTransactionController = async (req, res, next) => {
-  const { amount, source_account_id, destination_account_id, transaction_type } = req.body;
+  const {
+    amount,
+    source_account_id,
+    destination_account_id,
+    transaction_type,
+  } = req.body;
 
   if (
     amount === undefined ||
@@ -30,13 +31,11 @@ const createTransactionController = async (req, res, next) => {
     destination_account_id === undefined ||
     transaction_type === undefined
   ) {
-    return res
-      .status(400)
-      .json({
-        success: false,
-        message:
-          "Amount, source_account_id, and destination_account_id are required",
-      });
+    return res.status(400).json({
+      success: false,
+      message:
+        "Amount, source_account_id, and destination_account_id are required",
+    });
   }
 
   if (typeof amount !== "number") {
@@ -50,7 +49,7 @@ const createTransactionController = async (req, res, next) => {
       amount,
       source_account_id,
       destination_account_id,
-      transaction_type
+      transaction_type,
     });
 
     return res.status(201).json(result.id);
@@ -60,7 +59,13 @@ const createTransactionController = async (req, res, next) => {
 };
 
 const createFutureTransactionController = async (req, res, next) => {
-  const { amount, source_account_id, destination_account_id, transaction_type, transaction_date } = req.body;
+  const {
+    amount,
+    source_account_id,
+    destination_account_id,
+    transaction_type,
+    transaction_date,
+  } = req.body;
 
   if (
     amount === undefined ||
@@ -69,13 +74,11 @@ const createFutureTransactionController = async (req, res, next) => {
     transaction_type === undefined ||
     transaction_date === undefined
   ) {
-    return res
-      .status(400)
-      .json({
-        success: false,
-        message:
-          "Amount, source_account_id, destination_account_id, transaction_type, and transaction_date are required",
-      });
+    return res.status(400).json({
+      success: false,
+      message:
+        "Amount, source_account_id, destination_account_id, transaction_type, and transaction_date are required",
+    });
   }
 
   if (typeof amount !== "number") {
@@ -92,7 +95,7 @@ const createFutureTransactionController = async (req, res, next) => {
       destination_account_id,
       transaction_type,
       transaction_date,
-      is_paid: 'no'
+      is_paid: "no",
     });
 
     return res.status(201).json({ transactionId: result.id });
@@ -100,7 +103,6 @@ const createFutureTransactionController = async (req, res, next) => {
     next(error);
   }
 };
-
 
 //Filtrar transacciones
 const filterTransactionsController = async (req, res, next) => {
@@ -144,7 +146,7 @@ const getTransactionByIdController = async (req, res, next) => {
 const updateIsPaidTransactionController = async (req, res, next) => {
   const { id } = req.body;
   try {
-    const result = await transactionService.updateIsPaidTransaction(id); 
+    const result = await transactionService.updateIsPaidTransaction(id);
     if (result) {
       return res.status(200).json(true);
     } else {
@@ -174,5 +176,5 @@ export default {
   getTransactionByIdController,
   createFutureTransactionController,
   updateIsPaidTransactionController,
-  deleteTransaction
+  deleteTransaction,
 };

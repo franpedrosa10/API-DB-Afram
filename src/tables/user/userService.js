@@ -1,7 +1,7 @@
 import knex from "../../database/knex.js";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
-import jwt from  "jsonwebtoken";
+import jwt from "jsonwebtoken";
 const SECRET_KEY = process.env.CLAVE;
 const TABLE_NAME = "users";
 
@@ -9,19 +9,21 @@ const TABLE_NAME = "users";
 const getAllUsers = async () => {
   const users = await knex(TABLE_NAME)
     .select()
-    .orderBy(['real_name', 'last_name'], ['asc', 'asc']); 
+    .orderBy(["real_name", "last_name"], ["asc", "asc"]);
   return users;
 };
 
 // Obtener un usuario por ID
 const getOneUser = async (userId) => {
-  const user = await knex(TABLE_NAME).select().where("id", userId).first();
-
-  if (!user) {
-    return false;
+  try {
+    const user = await knex(TABLE_NAME).select().where("id", userId).first();
+    if (!user) {
+      throw new Error("User not found"); // Lanza un error si no encuentra la cuenta
+    }
+    return user;
+  } catch (error) {
+    throw error;
   }
-
-  return user;
 };
 
 // Crear un usuario con email random
@@ -34,13 +36,16 @@ const createUser = async (user) => {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(user.hashed_password, saltRounds);
 
-    const lastUser = await knex(TABLE_NAME).select('id').orderBy('id','desc').first();
+    const lastUser = await knex(TABLE_NAME)
+      .select("id")
+      .orderBy("id", "desc")
+      .first();
     const newId = lastUser.id + 1;
 
     await knex(TABLE_NAME).insert({
       name_user: user.name_user,
       last_name: user.last_name,
-      email: "example"+newId+"@example.com",
+      email: "example" + newId + "@example.com",
       hashed_password: hashedPassword,
       dni: user.dni,
       phone: "",
@@ -67,7 +72,10 @@ const createUserComplete = async (user) => {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(user.hashed_password, saltRounds);
 
-    const lastUser = await knex(TABLE_NAME).select('id').orderBy('id','desc').first();
+    const lastUser = await knex(TABLE_NAME)
+      .select("id")
+      .orderBy("id", "desc")
+      .first();
     const newId = lastUser.id + 1;
 
     await knex(TABLE_NAME).insert({
@@ -213,7 +221,6 @@ const toggleUserAdminStatus = async (userId, userType) => {
 
 // Obtener ID de usuario por DNI
 const getUserIdByDNI = async (dni) => {
-
   const user = await knex(TABLE_NAME).select("id").where("dni", dni).first();
 
   if (!user) {
@@ -223,12 +230,11 @@ const getUserIdByDNI = async (dni) => {
   return user.id;
 };
 
-
 // Obtener ID de usuario por correo electrónico
 const getUserIdByEmail = async (email) => {
   try {
     const user_id = await knex(TABLE_NAME)
-      .select("id") 
+      .select("id")
       .where({ email }) // Usamos el email como criterio de búsqueda
       .first(); // Aseguramos que solo se devuelva un registro
 
@@ -243,7 +249,6 @@ const getUserIdByEmail = async (email) => {
   }
 };
 
-
 // Cambiar contraseña por token
 const changePasswordById = async (id, newPassword) => {
   try {
@@ -257,11 +262,9 @@ const changePasswordById = async (id, newPassword) => {
       .update({ hashed_password: hashedNewPassword });
 
     // Poner el reset_token en null después de cambiar la contraseña
-    await knex(TABLE_NAME)
-      .where({ id })
-      .update({ reset_token: null });
+    await knex(TABLE_NAME).where({ id }).update({ reset_token: null });
 
-    return true;  // Retorna true si todo sale bien
+    return true; // Retorna true si todo sale bien
   } catch (error) {
     throw error;
   }
@@ -284,8 +287,6 @@ const getUserIdByToken = async (resetToken) => {
     throw error; // Si ocurre algún error, se lanza
   }
 };
-
-
 
 // Generar un token de recuperación de 6 dígitos y guardarlo en la base de datos
 const generateRecoveryToken = async (id) => {
@@ -312,11 +313,9 @@ const generateRecoveryToken = async (id) => {
   }
 };
 
-
 // Cambiar el estado de is_blocked a partir del DNI
-const editAttemptsUser = async (dni, login_attempts ) => {
+const editAttemptsUser = async (dni, login_attempts) => {
   try {
-
     const user = await knex(TABLE_NAME).where({ dni }).first();
 
     if (!user) {
@@ -324,14 +323,14 @@ const editAttemptsUser = async (dni, login_attempts ) => {
     }
 
     const rowsUpdated = await knex(TABLE_NAME)
-      .where( "dni", dni )
-      .update( { login_attempts  : login_attempts  });
+      .where("dni", dni)
+      .update({ login_attempts: login_attempts });
 
     if (rowsUpdated === 0) {
-      return false; 
+      return false;
     }
 
-    return true; 
+    return true;
   } catch (error) {
     throw new Error(`Error updating is_blocked status: ${error.message}`);
   }
@@ -339,7 +338,7 @@ const editAttemptsUser = async (dni, login_attempts ) => {
 
 // Función para generar el token
 const generateToken = (user) => {
-  const payload = { 
+  const payload = {
     id: user.id,
     real_name: user.real_name,
     name_user: user.name_user,
@@ -348,12 +347,11 @@ const generateToken = (user) => {
     dni: user.dni,
     phone: user.phone,
     user_type: user.user_type,
-    is_Active: user.is_Active
+    is_Active: user.is_Active,
   };
 
-  return jwt.sign(payload, SECRET_KEY); 
+  return jwt.sign(payload, SECRET_KEY);
 };
-
 
 export default {
   getAllUsers,
@@ -371,5 +369,5 @@ export default {
   getUserIdByToken,
   generateRecoveryToken,
   editAttemptsUser,
-  generateToken
+  generateToken,
 };
