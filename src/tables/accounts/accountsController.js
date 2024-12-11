@@ -7,7 +7,11 @@ const getAccount = async (req, res, next) => {
     const result = await accountsService.getAccount(accountId);
     return res.status(200).json(result);
   } catch (error) {
-    next(error);
+    if (error.message === "Account not found") {
+      res.status(404).json({ message: "Account not found" }); 
+    } else {
+      next(error); 
+    }
   }
 };
 

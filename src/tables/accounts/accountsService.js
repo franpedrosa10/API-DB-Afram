@@ -6,7 +6,7 @@ const getAccount = async (accountId) => {
   try {
     const account = await knex(TABLE_NAME).where("id", accountId).first();
     if (!account) {
-      return { message: "Account not found", success: false };
+      throw new Error("Account not found"); // Lanza un error si no encuentra la cuenta
     }
     return account;
   } catch (error) {
