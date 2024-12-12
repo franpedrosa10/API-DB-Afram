@@ -1,7 +1,4 @@
 import dotenv from 'dotenv' //para usar variables de entorno
-dotenv.config();
-
-
 import express from 'express';
 import cors from 'cors';
 import routerUsers from './tables/user/userRoutes.js';
@@ -16,7 +13,9 @@ import routerEmail from './tables/email/emailRoutes.js';
 import routerSupport from './tables/support/supportRoutes.js'
 import routerSupportMessages from './tables/supportMessages/supportMessagesRoutes.js'
 import routerNotifications from './tables/notifications/notificationsRoutes.js'
+import swaggerDocs from '../swagger.js';
 
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT_API
@@ -36,6 +35,7 @@ app.use('/support', routerSupport)
 app.use('/message', routerSupportMessages)
 app.use('/notification', routerNotifications)
 
+swaggerDocs(app, PORT);
 
 app.listen(PORT, () => {
     console.log(`API funcionando en http://localhost:${PORT}`)
