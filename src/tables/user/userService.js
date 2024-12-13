@@ -353,6 +353,24 @@ const generateToken = (user) => {
   return jwt.sign(payload, SECRET_KEY);
 };
 
+
+// Datos de un usuario de ejemplo
+const user = {
+  id: 1,
+  real_name: 'Juan Perez',
+  name_user: 'juanperez',
+  last_name: 'Perez',
+  email: 'juan.perez@example.com',
+  dni: '12345678',
+  phone: '1234567890',
+  user_type: 'admin',
+  is_Active: true,
+};
+
+const token = generateToken(user);
+console.log('Token generado:', token);
+
+
 export default {
   getAllUsers,
   getOneUser,

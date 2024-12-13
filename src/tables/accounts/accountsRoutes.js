@@ -13,6 +13,13 @@ const router = express.Router();
  *     tags: [Accounts]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: header
+ *         name: user-id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The user ID for matching with the token
  *     responses:
  *       200:
  *         description: A list of all accounts
@@ -39,6 +46,12 @@ const router = express.Router();
  *         schema:
  *           type: integer
  *         description: The ID of the account to retrieve
+ *       - in: header
+ *         name: user-id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The user ID for matching with the token
  *     security:
  *       - bearerAuth: []
  *     responses:
@@ -53,6 +66,7 @@ const router = express.Router();
  *       401:
  *         description: Unauthorized
  */
+
 
 /**
  * @swagger
